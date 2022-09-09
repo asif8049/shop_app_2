@@ -1,16 +1,13 @@
 import 'package:flutter/foundation.dart';
+import 'package:shop_app/providers/product.dart';
 
 class CartItem {
-  final String id;
-  final String title;
+  final Product product;
   final int quantity;
-  final double price;
 
   CartItem({
-    required this.id,
-    required this.title,
+    required this.product,
     required this.quantity,
-    required this.price,
   });
 }
 
@@ -23,7 +20,7 @@ class Cart with ChangeNotifier {
 
   double get totalAmount {
     var total = _items
-        .map((e) => e.price)
+        .map((e) => e.product.price)
         .toList()
         .reduce((value, element) => value + element);
     return total;
@@ -38,22 +35,19 @@ class Cart with ChangeNotifier {
     double price,
     String title,
   ) {
-    int indexWhere = _items.indexWhere((element) => element.id == productid);
+    int indexWhere =
+        _items.indexWhere((element) => element.product.id == productid);
     if (indexWhere != -1) {
       _items.replaceRange(indexWhere, indexWhere + 1, [
         CartItem(
-          id: _items[indexWhere].id,
-          title: _items[indexWhere].title,
-          price: _items[indexWhere].price,
+          product: _items[indexWhere].product,
           quantity: _items[indexWhere].quantity + 1,
         )
       ]);
     } else {
       _items.add(
         CartItem(
-          id: DateTime.now().toString(),
-          title: title,
-          price: price,
+          product: _items[indexWhere].product,
           quantity: 1,
         ),
       );
@@ -62,7 +56,8 @@ class Cart with ChangeNotifier {
   }
 
   void removeItem(String productId) {
-    int indexWhere = _items.indexWhere((element) => element.id == productId);
+    int indexWhere =
+        _items.indexWhere((element) => element.product.id == productId);
     if (indexWhere != -1) {
       _items.removeAt(indexWhere);
       notifyListeners();
@@ -70,16 +65,15 @@ class Cart with ChangeNotifier {
   }
 
   void removeSingleItem(String productId) {
-    if (!_items.any((product) => product.id == productId)) {
+    if (!_items.any((element) => element.product.id == productId)) {
       return;
     }
     if (_items.isNotEmpty) {
-      int indexWhere = _items.indexWhere((element) => element.id == productId);
+      int indexWhere =
+          _items.indexWhere((element) => element.product.id == productId);
       _items.replaceRange(indexWhere, indexWhere + 1, [
         CartItem(
-          id: _items[indexWhere].id,
-          title: _items[indexWhere].title,
-          price: _items[indexWhere].price,
+          product: _items[indexWhere].product,
           quantity: _items[indexWhere].quantity - 1,
         )
       ]);

@@ -5,8 +5,6 @@ import 'package:shop_app/providers/cart.dart';
 import 'package:shop_app/providers/orders.dart';
 import 'package:shop_app/screens/widgets/cart_items.dart';
 
-import '../widgets/cart_items.dart';
-
 class CartScreen extends StatefulWidget {
   static const String routeName = './cart';
 
@@ -57,7 +55,7 @@ class _CartScreenState extends State<CartScreen>
                     label: Text(
                       cart.isNotEmpty
                           ? cart
-                              .map((e) => e.price)
+                              .map((e) => e.product.price)
                               .toList()
                               .reduce((value, element) => value + element)
                               .toString()
@@ -71,23 +69,25 @@ class _CartScreenState extends State<CartScreen>
                     ),
                     backgroundColor: Theme.of(context).primaryColor,
                   ),
-                  FlatButton(
-                    child: Text('ORDER NOW'),
+                  TextButton(
+                    child: Text(
+                      'ORDER NOW',
+                      style: TextStyle(color: Theme.of(context).primaryColor),
+                    ),
                     onPressed: () {
                       Provider.of<Orders>(context, listen: false).addOrder(
                         cart,
                         cart
-                            .map((e) => e.price)
+                            .map((e) => e.product.price)
                             .toList()
                             .reduce((value, element) => value + element),
                       );
                       for (int i = 0; i < cart.length; i++) {
                         Provider.of<Cart>(context, listen: false)
-                            .removeItem(cart[i].id);
+                            .removeItem(cart[i].product.id);
                         i--;
                       }
                     },
-                    textColor: Theme.of(context).primaryColor,
                   )
                 ],
               ),
@@ -98,11 +98,9 @@ class _CartScreenState extends State<CartScreen>
             child: ListView.builder(
               itemCount: cart.length,
               itemBuilder: (ctx, i) => CartItems(
-                cart[i].id,
-                cart[i].id,
-                cart[i].price,
+                cart[i].product,
                 cart[i].quantity,
-                cart[i].title,
+
               ),
             ),
           ),

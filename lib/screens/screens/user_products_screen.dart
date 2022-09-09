@@ -1,14 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:shop_app/providers/products.darts.dart';
 import 'package:shop_app/screens/screens/edit_product_screen.dart';
 
-import '../widgets/user_product_item.dart';
-import '../widgets/app_drawer.dart';
+import '../../providers/products.dart';
 import './edit_product_screen.dart';
+import '../widgets/app_drawer.dart';
+import '../widgets/user_product_item.dart';
 
 class UserProductsScreen extends StatelessWidget {
   static const routeName = '/user-products';
+
   @override
   Widget build(BuildContext context) {
     final productsData = Provider.of<Products>(context);
@@ -19,8 +20,11 @@ class UserProductsScreen extends StatelessWidget {
           IconButton(
             icon: const Icon(Icons.add),
             onPressed: () {
-              Navigator.of(context).pushNamed(EditProductScreen.routeName);
-              // ...
+              Navigator.of(context).push(MaterialPageRoute(builder: (context) {
+                return EditProductScreen(
+                  product: productsData,
+                );
+              }));
             },
           )
         ],
@@ -32,11 +36,7 @@ class UserProductsScreen extends StatelessWidget {
           itemCount: productsData.items.length,
           itemBuilder: (_, i) => Column(
             children: [
-              UserProductItem(
-                productsData.items[i].id,
-                productsData.items[i].title,
-                productsData.items[i].imageUrl,
-              ),
+              UserProductItem(product: productsData.items[i]),
               Divider(),
             ],
           ),
