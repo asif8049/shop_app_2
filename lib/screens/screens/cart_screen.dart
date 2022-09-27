@@ -6,7 +6,7 @@ import 'package:shop_app/providers/orders.dart';
 import 'package:shop_app/screens/widgets/cart_items.dart';
 
 class CartScreen extends StatefulWidget {
-  static const String routeName = './cart';
+
 
   const CartScreen({Key? key}) : super(key: key);
 

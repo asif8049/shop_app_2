@@ -2,6 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:provider/provider.dart';
 
 import '../../providers/products.dart';
+import '../models/product.dart';
 import '../widgets/product_item.dart';
 
 class ProductsGrid extends StatelessWidget {
@@ -11,17 +12,21 @@ class ProductsGrid extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final productsData = Provider.of<Products>(context);
-    final products = showFavs ? productsData.favoriteItems : productsData.items;
+    List<Product> productsData = Provider.of<Products>(context).loadedProducts;
+    List<Product> products = productsData;
+    if (showFavs) {
+      products.clear();
+      productsData.forEach((element) {
+        if (element.isFavorite) {
+          products.add(element);
+        }
+      });
+    }
 
     return GridView.builder(
       padding: const EdgeInsets.all(10.0),
       itemCount: products.length,
-      itemBuilder: (ctx, i) => ChangeNotifierProvider.value(
-        // building: (c) => product[i],
-        value: products[i],
-        child: ProductItem(product: products[i]),
-      ),
+      itemBuilder: (ctx, i) => ProductItem(product: products[i]),
       gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
         crossAxisCount: 2,
         childAspectRatio: 3 / 2,

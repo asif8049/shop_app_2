@@ -1,5 +1,6 @@
 import 'package:flutter/foundation.dart';
-import 'package:shop_app/providers/product.dart';
+
+import '../screens/models/product.dart';
 
 class CartItem {
   final Product product;

@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:shop_app/providers/product.dart';
 
+import '../../providers/products.dart';
+import '../models/product.dart';
 import '../products_details_screen.dart';
 
 class ProductItem extends StatelessWidget {
@@ -16,10 +17,11 @@ class ProductItem extends StatelessWidget {
       child: GridTile(
         child: GestureDetector(
           onTap: () {
-            Navigator.of(context).pushNamed(
-              ProductDetailScreen.routeName,
-              arguments: product.id,
-            );
+            Navigator.of(context).push(MaterialPageRoute(builder: (context) {
+              return ProductDetailScreen(
+                productId: product.id,
+              );
+            }));
           },
           child: Image.network(
             product.imageUrl,
@@ -28,13 +30,11 @@ class ProductItem extends StatelessWidget {
         ),
         footer: GridTileBar(
           backgroundColor: Colors.black87,
-          leading: Consumer<Product>(
-            builder: (ctx, product, child) => IconButton(
-              icon: Icon(
-                  product.isFavorite ? Icons.favorite : Icons.favorite_border),
-              color: Theme.of(context).accentColor,
-              onPressed: () {},
-            ),
+          leading: IconButton(
+            icon: Icon(
+                product.isFavorite ? Icons.favorite : Icons.favorite_border),
+            color: Theme.of(context).accentColor,
+            onPressed: () {},
           ),
           title: Text(
             product.title,

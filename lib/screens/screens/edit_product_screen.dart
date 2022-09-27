@@ -5,9 +5,9 @@ import '../../providers/products.dart';
 import '../models/product.dart';
 
 class EditProductScreen extends StatefulWidget {
-  final Product product;
+  final Product? product;
 
-  const EditProductScreen({Key? key, required this.product}) : super(key: key);
+  const EditProductScreen({Key? key, this.product}) : super(key: key);
 
   @override
   _EditProductScreenState createState() => _EditProductScreenState();
@@ -29,11 +29,13 @@ class _EditProductScreenState extends State<EditProductScreen> {
 
   @override
   void initState() {
-    _editedProduct = widget.product;
-    _titleController.text = _editedProduct!.title;
-    _priceController.text = _editedProduct!.price.toString();
-    _descriptionController.text = _editedProduct!.description;
-    _imageUrlController.text = _editedProduct!.imageUrl;
+    if (widget.product != null) {
+      _editedProduct = widget.product;
+      _titleController.text = _editedProduct!.title;
+      _priceController.text = _editedProduct!.price.toString();
+      _descriptionController.text = _editedProduct!.description;
+      _imageUrlController.text = _editedProduct!.imageUrl;
+    }
 
     super.initState();
   }
@@ -163,14 +165,25 @@ class _EditProductScreenState extends State<EditProductScreen> {
                   return null;
                 },
                 onSaved: (value) {
-                  _editedProduct = Product(
-                    title: _editedProduct!.title,
-                    price: _editedProduct!.price,
-                    description: value!,
-                    imageUrl: _editedProduct!.imageUrl,
-                    id: _editedProduct!.id,
-                    isFavorite: _editedProduct!.isFavorite,
-                  );
+                  if (_editedProduct != null) {
+                    _editedProduct = Product(
+                      title: _editedProduct!.title,
+                      price: _editedProduct!.price,
+                      description: value!,
+                      imageUrl: _editedProduct!.imageUrl,
+                      id: _editedProduct!.id,
+                      isFavorite: _editedProduct!.isFavorite,
+                    );
+                  } else {
+                    _editedProduct = Product(
+                      title: _titleController.text,
+                      price: double.parse(_priceController.text),
+                      description: value!,
+                      imageUrl: _imageUrlController.text,
+                      id: DateTime.now().toString(),
+                      isFavorite: false,
+                    );
+                  }
                 },
               ),
               Row(
