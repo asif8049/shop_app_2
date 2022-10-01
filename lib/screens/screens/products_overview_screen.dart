@@ -5,7 +5,7 @@ import 'package:shop_app/screens/widgets/Products_grid.dart';
 import 'package:shop_app/screens/widgets/app_drawer.dart';
 import 'package:shop_app/screens/widgets/badge.dart';
 
-import '../providers/cart.dart';
+import '../../providers/cart.dart';
 
 enum FilterOptions {
   Favorites,

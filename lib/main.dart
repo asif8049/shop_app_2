@@ -4,7 +4,7 @@ import 'package:shop_app/providers/products.dart';
 
 import './providers/cart.dart';
 import './providers/orders.dart';
-import './screens/products_overview_screen.dart';
+import 'screens/screens/products_overview_screen.dart';
 
 Future<void> main() async {
   runApp(MultiProvider(
