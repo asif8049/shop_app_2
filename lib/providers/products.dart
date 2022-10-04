@@ -1,5 +1,4 @@
 import 'package:flutter/cupertino.dart';
-import 'package:http/http.dart'; as http;
 
 import '../screens/models/product.dart';
 
@@ -43,17 +42,17 @@ class Products with ChangeNotifier {
 
   List<Product> get items {
     // if (_showFavoritesOnly) {
-    // return _items.where((prodItem) => prodItem.isFavorites).toList();
+    // return loadedProducts.where((prodItem) => prodItem.isFavorites).toList();
     //}
-    return [..._items];
+    return [...loadedProducts];
   }
 
   List<Product> get favoritesItems {
-    return _items.where((prodItem) => prodItem.isFavorite).toList();
+    return loadedProducts.where((prodItem) => prodItem.isFavorite).toList();
   }
 
   Product findById(String id) {
-    return _items.firstwhere((prod) => prod.id == id);
+    return loadedProducts.firstWhere((prod) => prod.id == id);
   }
 
   // void showFavoritesOnly {
@@ -74,15 +73,15 @@ class Products with ChangeNotifier {
       imageUrl: product.imageUrl,
       id: DateTime.now().toString(),
     );
-    _items.add(newProduct);
-    // _items.insert(0, newProduct); at the start of the list
+    loadedProducts.add(newProduct);
+    // loadedProducts.insert(0, newProduct); at the start of the list
     notifyListeners();
   }
 
   void updateProduct(String id, Product newProduct) {
-    final prodIndex = _items.indexWhere((prod) => prod.id == id);
+    final prodIndex = loadedProducts.indexWhere((prod) => prod.id == id);
     if (prodIndex >= 0) {
-      _items[prodIndex] = newProduct;
+      loadedProducts[prodIndex] = newProduct;
       notifyListeners();
     } else {
       print('...');
@@ -90,7 +89,7 @@ class Products with ChangeNotifier {
   }
 
   void deleteProduct(String id) {
-    _items.removeWhere((prod) => prod.id == id);
+    loadedProducts.removeWhere((prod) => prod.id == id);
     notifyListeners();
   }
 }
