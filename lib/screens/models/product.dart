@@ -17,5 +17,13 @@ class Product{
     this.isFavorite = false,
   });
 
+  factory Product.empty() => Product(
+    id: '',
+    title: '',
+    description: '',
+    price: 0,
+    imageUrl: '',
+  );
+
 }
 
