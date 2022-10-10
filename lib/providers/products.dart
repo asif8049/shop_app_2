@@ -1,4 +1,6 @@
+import 'dart:convert';
 import 'package:flutter/cupertino.dart';
+import 'package:http/http.dart' as http;
 
 import '../screens/models/product.dart';
 
@@ -10,7 +12,7 @@ class Products with ChangeNotifier {
       description: 'best piece to use',
       price: 20000,
       imageUrl:
-      'https://www.deccanherald.com/sites/dh/files/styles/article_detail/public/articleimages/2022/06/02/opnce-cov-sho-sel-1-1114681-1654183014.jpg?itok=g9QNvPbm',
+      'https://images.fonearena.com/blog/wp-content/uploads/2021/05/OnePlus-9R_FoneArena-1-1024x638.jpg',
     ),
     Product(
       id: 'p2',
@@ -26,7 +28,7 @@ class Products with ChangeNotifier {
       description: 'Best for Personality',
       price: 4500,
       imageUrl:
-      'https://www.watchshopping.com/media/tm_blog/p/o/1/8073/post_1_8073.jpg',
+      'https://content.rolex.com/dam/2022/upright-bba-with-shadow/m278288rbr-0038.png?impolicy=v6-upright&imwidth=270',
     ),
     Product(
       id: 'p4',
@@ -66,6 +68,14 @@ class Products with ChangeNotifier {
 // }
 
   void addProduct(Product product) {
+    const url = 'https://flutter-update.firebaseio.com/products.json';
+    http.post(Uri.parse(url), body: json.encode({
+      'title': product.title,
+      'description': product.description,
+      'imageUrl': product.imageUrl,
+      'price': product.price,
+      'isFavorite': product.isFavorite,
+    }),);
     final newProduct = Product(
       title: product.title,
       description: product.description,
