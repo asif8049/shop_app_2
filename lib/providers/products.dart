@@ -38,6 +38,13 @@ class Products with ChangeNotifier {
       imageUrl:
       'https://assets.myntassets.com/dpr_1.5,q_60,w_400,c_limit,fl_progressive/assets/images/11896080/2022/8/2/85763484-7792-449d-887c-9db0d14dcc111659416376505-Roadster-Men-Black-Regular-Fit-Solid-Sustainable-Casual-Shir-1.jpg',
     ),
+    Product(
+      id: 'p5',
+      title: 'Perfume',
+      description: 'Best perfume to use',
+      price: 700,
+      imageUrl: 'https://oudandmusk.com/2405-large_default/fakhar-al-oud-perfume.jpg'
+    ),
   ];
 
   // var _showFavoritesOnly = false;
@@ -68,7 +75,7 @@ class Products with ChangeNotifier {
 // }
 
   void addProduct(Product product) {
-    const url = 'https://flutter-update.firebaseio.com/products.json';
+    const url = 'https://shop-flutter-42adb-default-rtdb.firebaseio.com/products.json';
     http.post(Uri.parse(url), body: json.encode({
       'title': product.title,
       'description': product.description,
