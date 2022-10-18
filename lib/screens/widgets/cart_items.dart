@@ -4,7 +4,6 @@ import 'package:shop_app/providers/cart.dart';
 
 import '../models/product.dart';
 
-
 class CartItems extends StatelessWidget {
   final Product product;
   final int quantity;

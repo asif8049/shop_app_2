@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:shop_app/screens/screens/products_overview_screen.dart';
 
 import '../screens/orders_screen.dart';
 import '../screens/user_products_screen.dart';
@@ -30,7 +31,7 @@ class AppDrawer extends StatelessWidget {
             title: Text('My Shop'),
             onTap: () {
               Navigator.of(context).push(MaterialPageRoute(builder: (context) {
-                return UserProductsScreen();
+                return ProductsOverviewScreen();
               }));
             },
           ),

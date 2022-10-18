@@ -6,8 +6,6 @@ import 'package:shop_app/providers/orders.dart';
 import 'package:shop_app/screens/widgets/cart_items.dart';
 
 class CartScreen extends StatefulWidget {
-
-
   const CartScreen({Key? key}) : super(key: key);
 
   @override
@@ -100,7 +98,6 @@ class _CartScreenState extends State<CartScreen>
               itemBuilder: (ctx, i) => CartItems(
                 cart[i].product,
                 cart[i].quantity,
-
               ),
             ),
           ),

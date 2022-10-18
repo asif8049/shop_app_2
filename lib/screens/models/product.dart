@@ -1,6 +1,6 @@
 import 'package:flutter/foundation.dart';
 
-class Product{
+class Product {
   final String id;
   final String title;
   final String description;
@@ -16,14 +16,34 @@ class Product{
     required this.imageUrl,
     this.isFavorite = false,
   });
+  //to json
+  Map<String, dynamic> toJson() => {
+        'id': id,
+        'title': title,
+        'description': description,
+        'price': price,
+        'imageUrl': imageUrl,
+        'isFavourite': isFavorite,
+      };
 
-  factory Product.empty() => Product(
-    id: '',
-    title: '',
-    description: '',
-    price: 0,
-    imageUrl: '',
-  );
+//from json
+  factory Product.fromJson(Map<String, dynamic> json) => Product(
+        id: json['id'],
+        title: json['title'] ?? "",
+        description: json['description'] ?? "",
+        price: double.parse((json['price'] ?? 0).toString()),
+        imageUrl: json['imageUrl'] ?? "",
+        isFavorite: json['isFavourite'] ?? false,
+      );
 
+  factory Product.empty() {
+    return Product(
+      id: '',
+      title: '',
+      description: '',
+      price: 0,
+      imageUrl: '',
+      isFavorite: false,
+    );
+  }
 }
-
