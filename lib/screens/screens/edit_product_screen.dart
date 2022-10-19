@@ -29,6 +29,7 @@ class _EditProductScreenState extends State<EditProductScreen> {
 
   var _isInit = true;
   var _isLoading = false;
+
   @override
   void initState() {
     if (widget.product != null) {
@@ -77,10 +78,10 @@ class _EditProductScreenState extends State<EditProductScreen> {
     if (_editedProduct.id.isNotEmpty) {
       await Provider.of<Products>(context, listen: false)
           .updateProduct(_editedProduct.id, _editedProduct);
-   //   setState(() {
-  //      _isLoading = false;
-   //   });
-   //   Navigator.of(context).pop();
+      //   setState(() {
+      //      _isLoading = false;
+      //   });
+      //   Navigator.of(context).pop();
     } else {
       await Provider.of<Products>(context, listen: false)
           .addProduct(Product(
@@ -90,15 +91,16 @@ class _EditProductScreenState extends State<EditProductScreen> {
               price: double.parse(_priceController.text),
               imageUrl: _imageUrlController.text))
           .then((_) {
-       // setState(() {
-       //   _isLoading = false;
-    //    });
-    //    Navigator.of(context).pop();
+        // setState(() {
+        //   _isLoading = false;
+        //    });
+        //    Navigator.of(context).pop();
       });
       setState(() {
         _isLoading = false;
       });
       Navigator.of(context).pop();
+    }
   }
 
   @override
@@ -286,7 +288,4 @@ class _EditProductScreenState extends State<EditProductScreen> {
             ),
     );
   }
-}
-
-
 }

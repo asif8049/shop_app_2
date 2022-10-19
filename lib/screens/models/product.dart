@@ -1,5 +1,3 @@
-import 'package:flutter/foundation.dart';
-
 class Product {
   final String id;
   final String title;
@@ -16,6 +14,7 @@ class Product {
     required this.imageUrl,
     this.isFavorite = false,
   });
+
   //to json
   Map<String, dynamic> toJson() => {
         'id': id,

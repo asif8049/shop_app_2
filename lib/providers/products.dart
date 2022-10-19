@@ -1,4 +1,5 @@
 import 'dart:convert';
+
 import 'package:flutter/cupertino.dart';
 import 'package:http/http.dart' as http;
 
@@ -136,15 +137,15 @@ class Products with ChangeNotifier {
   Future<void> updateProduct(String id, Product newProduct) async {
     final prodIndex = loadedProducts.indexWhere((prod) => prod.id == id);
     if (prodIndex >= 0) {
-
       final url =
           'https://shop-flutter-42adb-default-rtdb.firebaseio.com/products/$id.json';
-     await http.patch(Uri.parse(url), body: json.encode({
-        'title': newProduct.title,
-        'description': newProduct.description,
-        'imageUrl': newProduct.imageUrl,
-        'price': newProduct.price,
-      }));
+      await http.patch(Uri.parse(url),
+          body: json.encode({
+            'title': newProduct.title,
+            'description': newProduct.description,
+            'imageUrl': newProduct.imageUrl,
+            'price': newProduct.price,
+          }));
 
       loadedProducts[prodIndex] = newProduct;
       notifyListeners();
