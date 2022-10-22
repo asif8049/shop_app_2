@@ -67,26 +67,7 @@ class _CartScreenState extends State<CartScreen>
                     ),
                     backgroundColor: Theme.of(context).primaryColor,
                   ),
-                  TextButton(
-                    child: Text(
-                      'ORDER NOW',
-                      style: TextStyle(color: Theme.of(context).primaryColor),
-                    ),
-                    onPressed: () {
-                      Provider.of<Orders>(context, listen: false).addOrder(
-                        cart,
-                        cart
-                            .map((e) => e.product.price)
-                            .toList()
-                            .reduce((value, element) => value + element),
-                      );
-                      for (int i = 0; i < cart.length; i++) {
-                        Provider.of<Cart>(context, listen: false)
-                            .removeItem(cart[i].product.id);
-                        i--;
-                      }
-                    },
-                  )
+                  OrderButton(cart: cart)
                 ],
               ),
             ),
@@ -103,6 +84,52 @@ class _CartScreenState extends State<CartScreen>
           ),
         ],
       ),
+    );
+  }
+}
+
+class OrderButton extends StatefulWidget {
+  const OrderButton({
+    Key? key,
+    required this.cart,
+  }) : super(key: key);
+
+  final List<CartItem> cart;
+
+  @override
+  _OrderButtonState createState() => _OrderButtonState();
+}
+
+class _OrderButtonState extends State<OrderButton> {
+  var _isLoading = false;
+
+  @override
+  Widget build(BuildContext context) {
+    return TextButton(
+      child: _isLoading ? CircularProgressIndictor() : Text(
+        'ORDER NOW',
+        style: TextStyle(color: Theme.of(context).primaryColor),
+      ),
+      onPressed: (widget.cart.map((e) => e.product.price).toList().reduce((value, element) => value + element) <= 0 || _isLoading ? null : () async {
+        setState(() {
+          _isLoading = true;
+        });
+       await Provider.of<Orders>(context, listen: false).addOrder(
+          widget.cart,
+          widget.cart
+              .map((e) => e.product.price)
+              .toList()
+              .reduce((value, element) => value + element),
+        );
+        setState(() {
+          _isLoading = false;
+        });
+        for (int i = 0; i < widget.cart.length; i++) {
+          Provider.of<Cart>(context, listen: false)
+              .removeItem(widget.cart[i].product.id);
+          i--;
+        }
+      },
     );
   }
 }
