@@ -3,6 +3,8 @@ import 'package:provider/provider.dart';
 import 'package:shop_app/providers/orders.dart';
 import 'package:shop_app/screens/widgets/order_item.dart';
 
+import '../widgets/app_drawer.dart';
+
 class OrdersScreen extends StatefulWidget {
   static const routeName = '/orders';
 
@@ -33,7 +35,7 @@ class _OrdersScreenState extends State<OrdersScreen> {
 
 
 
-  @override
+/*  @override
   void initState() {
     Future.delayed(Duration.zero).then((_) async {
       setState(() {
@@ -45,7 +47,7 @@ class _OrdersScreenState extends State<OrdersScreen> {
       });
     });
     super.initState();
-  }
+  }*/
 
   @override
   Widget build(BuildContext context) {

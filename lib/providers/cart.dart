@@ -10,6 +10,17 @@ class CartItem {
     required this.product,
     required this.quantity,
   });
+
+  //from Json
+  CartItem.fromJson(Map<String, dynamic> json)
+      : product = Product.fromJson(json['product']),
+        quantity = json['quantity'];
+
+  //to Json
+  Map<String, dynamic> toJson() => {
+        'product': product.toJson(),
+        'quantity': quantity,
+      };
 }
 
 class Cart with ChangeNotifier {

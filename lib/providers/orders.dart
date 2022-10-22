@@ -1,6 +1,8 @@
 import 'dart:convert';
+
 import 'package:flutter/foundation.dart';
 import 'package:http/http.dart' as http;
+
 import './cart.dart';
 
 class OrderItem {
@@ -35,7 +37,7 @@ class Orders with ChangeNotifier {
   Future<void> fetchAndSetOrders() async {
     const url =
         'https://shop-flutter-42adb-default-rtdb.firebaseio.com/order.json';
-    final response = http.get(Uri.parse(url));
+    final response = await http.get(Uri.parse(url));
     final List<OrderItem> loadedOrders = [];
     final extractedData = json.decode(response.body) as Map<String, dynamic>;
     if (extractedData == null) {
@@ -47,14 +49,10 @@ class Orders with ChangeNotifier {
           id: orderId,
           amount: orderData['amount'],
           dateTime: DateTime.parse(orderData['datetime']),
-          products: (orderData['products'] as List<dynamic>)
-              .map((item) => CartItem(
-                    id: item['id'],
-                    price: item['price'],
-                    quantity: item['quantity'],
-                    title: item['title'],
-                  ),
-          )
+          products: (orderData['products'])
+              .map(
+                (item) => CartItem.fromJson(jsonDecode(item)),
+              )
               .toList(),
         ),
       );
@@ -63,7 +61,7 @@ class Orders with ChangeNotifier {
     notifyListeners();
   }
 
-  Future<void> fetchAndSetOrders() async {
+  /*Future<void> fetchAndSetOrders() async {
     const url =
         'https://shop-flutter-42adb-default-rtdb.firebaseio.com/order.json';
     final response = await http.get(Uri.parse(url));
@@ -93,7 +91,7 @@ class Orders with ChangeNotifier {
     });
     _orders = loadedOrders.reversed.toList();
     notifyListeners();
-  }
+  }*/
 
   Future<void> addOrder(List<CartItem> cartProducts, double total) async {
     const url =
