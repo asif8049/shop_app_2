@@ -1,14 +1,15 @@
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
 import 'package:shop_app/screens/screens/edit_product_screen.dart';
 
-import '../../providers/products.dart';
 import '../models/product.dart';
 
 class UserProductItem extends StatelessWidget {
   final Product product;
+  final Function() onProductDeleted;
 
-  const UserProductItem({Key? key, required this.product}) : super(key: key);
+  const UserProductItem(
+      {Key? key, required this.product, required this.onProductDeleted})
+      : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -36,8 +37,7 @@ class UserProductItem extends StatelessWidget {
             IconButton(
               icon: Icon(Icons.delete),
               onPressed: () {
-                Provider.of<Products>(context, listen: false)
-                    .deleteProduct(product.id);
+                onProductDeleted();
               },
               color: Theme.of(context).errorColor,
             ),

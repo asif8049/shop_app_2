@@ -99,6 +99,7 @@ class Products with ChangeNotifier {
     final response = await http.post(
       Uri.parse(url),
       body: json.encode({
+        'id': product.id,
         'title': product.title,
         'description': product.description,
         'imageUrl': product.imageUrl,
@@ -158,17 +159,11 @@ class Products with ChangeNotifier {
   }
 
   void deleteProduct(String id) {
+    print("Product ID: $id");
     final url =
         'https://shop-flutter-42adb-default-rtdb.firebaseio.com/products/$id.json';
-    final existingProductIndex =
-        loadedProducts.indexWhere((prod) => prod.id == id);
-    dynamic existingProduct = loadedProducts[existingProductIndex];
-    //  loadedProducts.removeAt(existingProductIndex);
     http.delete(Uri.parse(url)).then((response) {
-      if (response.statusCode >= 400) {}
-      existingProduct = null;
-      loadedProducts.insert(existingProductIndex, existingProduct);
+      fetchAndSetProducts();
     });
-    notifyListeners();
   }
 }

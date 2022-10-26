@@ -31,7 +31,14 @@ class UserProductsScreen extends StatelessWidget {
           itemCount: productsData.length,
           itemBuilder: (_, i) => Column(
             children: [
-              UserProductItem(product: productsData[i]),
+              UserProductItem(
+                product: productsData[i],
+                onProductDeleted: () {
+                  print("On Delete Pressed");
+                  Provider.of<Products>(context, listen: false)
+                      .deleteProduct(productsData[i].id);
+                },
+              ),
               Divider(),
             ],
           ),

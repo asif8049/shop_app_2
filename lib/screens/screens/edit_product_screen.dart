@@ -86,8 +86,7 @@ class _EditProductScreenState extends State<EditProductScreen> {
               description: _descriptionController.text,
               price: double.parse(_priceController.text),
               imageUrl: _imageUrlController.text))
-          .then((_) {
-      });
+          .then((_) {});
       setState(() {
         _isLoading = false;
       });
