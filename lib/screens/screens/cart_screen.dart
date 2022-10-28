@@ -106,41 +106,40 @@ class _OrderButtonState extends State<OrderButton> {
   @override
   Widget build(BuildContext context) {
     return TextButton(
-      child: _isLoading
-          ? Container(
-              child: CircularProgressIndicator(),
-            )
-          : Text(
-              'ORDER NOW',
-              style: TextStyle(color: Theme.of(context).primaryColor),
-            ),
-      onPressed: (widget.cart
+        child: _isLoading
+            ? Container(
+                child: CircularProgressIndicator(),
+              )
+            : Text(
+                'ORDER NOW',
+                style: TextStyle(color: Theme.of(context).primaryColor),
+              ),
+        onPressed: () async {
+          if (widget.cart.isEmpty) return;
+          if (widget.cart
                       .map((e) => e.product.price)
                       .toList()
                       .reduce((value, element) => value + element) <=
                   0 ||
-              _isLoading
-          ? null
-          : () async {
-              setState(() {
-                _isLoading = true;
-              });
-              await Provider.of<Orders>(context, listen: false).addOrder(
-                widget.cart,
-                widget.cart
-                    .map((e) => e.product.price)
-                    .toList()
-                    .reduce((value, element) => value + element),
-              );
-              setState(() {
-                _isLoading = false;
-              });
-              for (int i = 0; i < widget.cart.length; i++) {
-                Provider.of<Cart>(context, listen: false)
-                    .removeItem(widget.cart[i].product.id);
-                i--;
-              }
-            }),
-    );
+              _isLoading) return;
+          setState(() {
+            _isLoading = true;
+          });
+          await Provider.of<Orders>(context, listen: false).addOrder(
+            widget.cart,
+            widget.cart
+                .map((e) => e.product.price)
+                .toList()
+                .reduce((value, element) => value + element),
+          );
+          setState(() {
+            _isLoading = false;
+          });
+          for (int i = 0; i < widget.cart.length; i++) {
+            Provider.of<Cart>(context, listen: false)
+                .removeItem(widget.cart[i].product.id);
+            i--;
+          }
+        });
   }
 }
