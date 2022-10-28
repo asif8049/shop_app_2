@@ -27,7 +27,7 @@ class _EditProductScreenState extends State<EditProductScreen> {
 
   Product _editedProduct = Product.empty();
 
-  var _isInit = true;
+  final _isInit = true;
   var _isLoading = false;
 
   @override
@@ -67,42 +67,39 @@ class _EditProductScreenState extends State<EditProductScreen> {
   }
 
   Future<void> _saveForm() async {
-    final isValid = _form.currentState!.validate();
+    if (!_form.currentState!.validate()) return;
     setState(() {
       _isLoading = true;
     });
-    if (!isValid) {
-      return;
-    }
 
     if (_editedProduct.id.isNotEmpty) {
       await Provider.of<Products>(context, listen: false)
           .updateProduct(_editedProduct.id, _editedProduct);
     } else {
-      await Provider.of<Products>(context, listen: false)
-          .addProduct(Product(
-              id: DateTime.now().millisecondsSinceEpoch.toString(),
-              title: _titleController.text,
-              description: _descriptionController.text,
-              price: double.parse(_priceController.text),
-              imageUrl: _imageUrlController.text))
-          .then((_) {});
-      setState(() {
-        _isLoading = false;
-      });
-      Navigator.of(context).pop();
+      await Provider.of<Products>(context, listen: false).addProduct(Product(
+          id: DateTime.now().millisecondsSinceEpoch.toString(),
+          title: _titleController.text,
+          description: _descriptionController.text,
+          price: double.parse(_priceController.text),
+          imageUrl: _imageUrlController.text));
     }
+    setState(() {
+      _isLoading = false;
+    });
+    Navigator.of(context).pop();
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Edit Product'),
+        title: const Text('Edit Product'),
         actions: <Widget>[
           IconButton(
-            icon: Icon(Icons.save),
-            onPressed: _saveForm,
+            icon: const Icon(Icons.save),
+            onPressed: () {
+              _saveForm();
+            },
           ),
         ],
       ),
@@ -117,11 +114,8 @@ class _EditProductScreenState extends State<EditProductScreen> {
                 child: ListView(
                   children: <Widget>[
                     TextFormField(
-                      decoration: InputDecoration(labelText: 'Title'),
+                      decoration: const InputDecoration(labelText: 'Title'),
                       textInputAction: TextInputAction.next,
-                      onFieldSubmitted: (_) {
-                        FocusScope.of(context).requestFocus(_priceFocusNode);
-                      },
                       controller: _titleController,
                       validator: (value) {
                         if (value!.isEmpty) {
@@ -140,14 +134,10 @@ class _EditProductScreenState extends State<EditProductScreen> {
                       },
                     ),
                     TextFormField(
-                      decoration: InputDecoration(labelText: 'Price'),
+                      decoration: const InputDecoration(labelText: 'Price'),
                       textInputAction: TextInputAction.next,
                       keyboardType: TextInputType.number,
                       focusNode: _priceFocusNode,
-                      onFieldSubmitted: (_) {
-                        FocusScope.of(context)
-                            .requestFocus(_descriptionFocusNode);
-                      },
                       controller: _priceController,
                       validator: (value) {
                         if (value!.isEmpty) {
@@ -173,7 +163,8 @@ class _EditProductScreenState extends State<EditProductScreen> {
                       },
                     ),
                     TextFormField(
-                      decoration: InputDecoration(labelText: 'Description'),
+                      decoration:
+                          const InputDecoration(labelText: 'Description'),
                       maxLines: 3,
                       keyboardType: TextInputType.multiline,
                       focusNode: _descriptionFocusNode,
@@ -215,7 +206,7 @@ class _EditProductScreenState extends State<EditProductScreen> {
                         Container(
                           width: 100,
                           height: 100,
-                          margin: EdgeInsets.only(
+                          margin: const EdgeInsets.only(
                             top: 8,
                             right: 10,
                           ),
@@ -226,7 +217,7 @@ class _EditProductScreenState extends State<EditProductScreen> {
                             ),
                           ),
                           child: _imageUrlController.text.isEmpty
-                              ? Text('Entry a URL')
+                              ? const Text('Entry a URL')
                               : FittedBox(
                                   child: Image.network(
                                     _imageUrlController.text,
@@ -236,15 +227,13 @@ class _EditProductScreenState extends State<EditProductScreen> {
                         ),
                         Expanded(
                           child: TextFormField(
-                            decoration: InputDecoration(labelText: 'Image URL'),
+                            decoration:
+                                const InputDecoration(labelText: 'Image URL'),
                             keyboardType: TextInputType.url,
                             textInputAction: TextInputAction.done,
                             controller: _imageUrlController,
                             focusNode: _imageUrlFocusNode,
-                            onFieldSubmitted: (_) {
-                              _saveForm();
-                            },
-                            validator: (value) {
+                            /*validator: (value) {
                               if (value!.isEmpty) {
                                 return 'Please enter an image URL.';
                               }
@@ -258,7 +247,7 @@ class _EditProductScreenState extends State<EditProductScreen> {
                                 return 'Please enter a valid image URL.';
                               }
                               return null;
-                            },
+                            },*/
                             onSaved: (value) {
                               _editedProduct = Product(
                                 title: _editedProduct.title,

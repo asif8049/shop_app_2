@@ -50,11 +50,11 @@ class _OrdersScreenState extends State<OrdersScreen> {
     List<OrderItem> orderData = Provider.of<Orders>(context).orders;
     return Scaffold(
       appBar: AppBar(
-        title: Text('Your Orders'),
+        title: const Text('Your Orders'),
       ),
-      drawer: AppDrawer(),
+      drawer: const AppDrawer(),
       body: _isLoading
-          ? Center(child: CircularProgressIndicator())
+          ? const Center(child: CircularProgressIndicator())
           : ListView.builder(
               itemCount: orderData.length,
               itemBuilder: (ctx, i) => OrderItemWidget(orderData[i]),

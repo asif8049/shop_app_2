@@ -24,7 +24,7 @@ class CartItem {
 }
 
 class Cart with ChangeNotifier {
-  List<CartItem> _items = [];
+  final List<CartItem> _items = [];
 
   List<CartItem> get items {
     return _items;

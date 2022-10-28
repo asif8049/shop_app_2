@@ -1,12 +1,10 @@
-import 'dart:convert';
-
+import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/cupertino.dart';
-import 'package:http/http.dart' as http;
 
 import '../screens/models/product.dart';
 
 class Products with ChangeNotifier {
-  final List<Product> loadedProducts = [
+  List<Product> loadedProducts = [
     // Product(
     //  id: 'p1',
     //title: 'One Plus',
@@ -75,26 +73,18 @@ class Products with ChangeNotifier {
   // notifyListeners();
 // }
 
-  Future<void> fetchAndSetProducts() async {
-    const url =
-        'https://shop-flutter-42adb-default-rtdb.firebaseio.com/products.json';
-
-    final response = await http.get(Uri.parse(url));
-
-    loadedProducts.clear();
-    jsonDecode(response.body).forEach((key, value) {
-      Product newProduct = Product.fromJson(jsonDecode(jsonEncode(value)));
-      loadedProducts.add(newProduct);
-    });
-
-    notifyListeners();
-
-    print(json.decode(response.body));
-  }
-
   Future<void> addProduct(Product product) async {
-    const url =
-        'https://shop-flutter-42adb-default-rtdb.firebaseio.com/products.json';
+    print("Add product called");
+    await FirebaseDatabase.instance
+        .refFromURL("https://shop-flutter-42adb-default-rtdb.firebaseio.com/")
+        .child('products')
+        .child(product.id)
+        .set(product.toJson())
+        .then((value) {
+      print("Product added successfully");
+    });
+    /*String url =
+        'https://shop-flutter-42adb-default-rtdb.firebaseio.com/products/${product.id}.json';
 
     final response = await http.post(
       Uri.parse(url),
@@ -135,11 +125,16 @@ class Products with ChangeNotifier {
     loadedProducts.add(newProduct);
     // loadedProducts.insert(0, newProduct); at the start of the list
 
-    notifyListeners();
+    notifyListeners();*/
   }
 
   Future<void> updateProduct(String id, Product newProduct) async {
-    final prodIndex = loadedProducts.indexWhere((prod) => prod.id == id);
+    await FirebaseDatabase.instance
+        .refFromURL("https://shop-flutter-42adb-default-rtdb.firebaseio.com/")
+        .child('products')
+        .child(id)
+        .set(newProduct.toJson());
+    /*final prodIndex = loadedProducts.indexWhere((prod) => prod.id == id);
     if (prodIndex >= 0) {
       final url =
           'https://shop-flutter-42adb-default-rtdb.firebaseio.com/products/$id.json';
@@ -155,15 +150,24 @@ class Products with ChangeNotifier {
       notifyListeners();
     } else {
       print('...');
-    }
+    }*/
   }
 
-  void deleteProduct(String id) {
-    print("Product ID: $id");
+  Future<void> deleteProduct(String id) async {
+    /*print("Product ID: $id");
     final url =
         'https://shop-flutter-42adb-default-rtdb.firebaseio.com/products/$id.json';
     http.delete(Uri.parse(url)).then((response) {
+      int productIndex = loadedProducts.indexWhere((prod) => prod.id == id);
+      print("Product Index: $productIndex");
+      loadedProducts.removeWhere((prod) => prod.id == id);
       fetchAndSetProducts();
-    });
+    });*/
+
+    await FirebaseDatabase.instance
+        .refFromURL("https://shop-flutter-42adb-default-rtdb.firebaseio.com/")
+        .child('products')
+        .child(id)
+        .remove();
   }
 }

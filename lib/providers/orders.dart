@@ -24,13 +24,13 @@ class Orders with ChangeNotifier {
 
   List<OrderItem> get orders {
     List<OrderItem> allOrders = [];
-    _orders.forEach((order) {
+    for (var order in _orders) {
       allOrders.add(OrderItem(
           id: order.id,
           amount: order.amount,
           products: order.products,
           dateTime: order.dateTime));
-    });
+    }
     return allOrders;
   }
 

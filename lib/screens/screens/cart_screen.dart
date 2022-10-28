@@ -1,4 +1,3 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:shop_app/providers/cart.dart';
@@ -33,22 +32,22 @@ class _CartScreenState extends State<CartScreen>
     List<CartItem> cart = Provider.of<Cart>(context).items;
     return Scaffold(
       appBar: AppBar(
-        title: Text('Your Cart'),
+        title: const Text('Your Cart'),
       ),
       body: Column(
         children: <Widget>[
           Card(
-            margin: EdgeInsets.all(15),
+            margin: const EdgeInsets.all(15),
             child: Padding(
-              padding: EdgeInsets.all(8),
+              padding: const EdgeInsets.all(8),
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: <Widget>[
-                  Text(
+                  const Text(
                     'Total',
                     style: TextStyle(fontSize: 20),
                   ),
-                  Spacer(),
+                  const Spacer(),
                   Chip(
                     label: Text(
                       cart.isNotEmpty
@@ -72,7 +71,7 @@ class _CartScreenState extends State<CartScreen>
               ),
             ),
           ),
-          SizedBox(height: 10),
+          const SizedBox(height: 10),
           Expanded(
             child: ListView.builder(
               itemCount: cart.length,
@@ -108,7 +107,7 @@ class _OrderButtonState extends State<OrderButton> {
     return TextButton(
         child: _isLoading
             ? Container(
-                child: CircularProgressIndicator(),
+                child: const CircularProgressIndicator(),
               )
             : Text(
                 'ORDER NOW',

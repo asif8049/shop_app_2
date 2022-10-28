@@ -16,19 +16,19 @@ class AppDrawer extends StatelessWidget {
             title: const Text('Hello Friend!'),
             automaticallyImplyLeading: false,
           ),
-          Divider(),
+          const Divider(),
           ListTile(
-            leading: Icon(Icons.shop),
-            title: Text('Orders'),
+            leading: const Icon(Icons.shop),
+            title: const Text('Orders'),
             onTap: () {
               Navigator.of(context).push(MaterialPageRoute(builder: (context) {
-                return OrdersScreen();
+                return const OrdersScreen();
               }));
             },
           ),
           ListTile(
-            leading: Icon(Icons.payment),
-            title: Text('My Shop'),
+            leading: const Icon(Icons.payment),
+            title: const Text('My Shop'),
             onTap: () {
               Navigator.of(context).push(MaterialPageRoute(builder: (context) {
                 return ProductsOverviewScreen();
@@ -36,8 +36,8 @@ class AppDrawer extends StatelessWidget {
             },
           ),
           ListTile(
-            leading: Icon(Icons.edit),
-            title: Text('Manage Product'),
+            leading: const Icon(Icons.edit),
+            title: const Text('Manage Product'),
             onTap: () {
               Navigator.of(context).push(MaterialPageRoute(builder: (context) {
                 return UserProductsScreen();

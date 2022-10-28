@@ -6,7 +6,6 @@ import 'package:shop_app/screens/widgets/app_drawer.dart';
 import 'package:shop_app/screens/widgets/badge.dart';
 
 import '../../providers/cart.dart';
-import '../../providers/products.dart';
 
 enum FilterOptions {
   Favorites,
@@ -20,8 +19,8 @@ class ProductsOverviewScreen extends StatefulWidget {
 
 class _ProductsOverviewScreenState extends State<ProductsOverviewScreen> {
   var _showOnlyFavorites = false;
-  var _isInit = true;
-  var _isLoading = false;
+  final _isInit = true;
+  final _isLoading = false;
 
   @override
   void initState() {
@@ -34,17 +33,6 @@ class _ProductsOverviewScreenState extends State<ProductsOverviewScreen> {
 
   @override
   void didChangeDependencies() {
-    if (_isInit) {
-      Provider.of<Products>(context).fetchAndSetProducts().then((_) {
-        setState(() {
-          _isLoading = true;
-        });
-        setState(() {
-          _isLoading = false;
-        });
-      });
-    }
-    _isInit = false;
     super.didChangeDependencies();
   }
 
@@ -52,7 +40,7 @@ class _ProductsOverviewScreenState extends State<ProductsOverviewScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('MyShop'),
+        title: const Text('MyShop'),
         actions: <Widget>[
           PopupMenuButton(
             onSelected: (FilterOptions selectedValue) {
@@ -64,12 +52,12 @@ class _ProductsOverviewScreenState extends State<ProductsOverviewScreen> {
                 }
               });
             },
-            icon: Icon(
+            icon: const Icon(
               Icons.more_vert,
             ),
             itemBuilder: (_) => [
-              PopupMenuItem(child: Text('Show All'), value: FilterOptions.All),
-              PopupMenuItem(
+              const PopupMenuItem(child: Text('Show All'), value: FilterOptions.All),
+              const PopupMenuItem(
                 child: Text('Show All'),
                 value: FilterOptions.All,
               ),
@@ -78,7 +66,7 @@ class _ProductsOverviewScreenState extends State<ProductsOverviewScreen> {
           Consumer<Cart>(
             builder: (_, cart, ch) => Badge(
               child: ch ??
-                  Container(
+                  const SizedBox(
                     width: 0,
                     height: 0,
                   ),
@@ -86,21 +74,21 @@ class _ProductsOverviewScreenState extends State<ProductsOverviewScreen> {
               color: Colors.red,
             ),
             child: IconButton(
-                icon: Icon(
+                icon: const Icon(
                   Icons.shopping_cart,
                 ),
                 onPressed: () {
                   Navigator.of(context)
                       .push(MaterialPageRoute(builder: (context) {
-                    return CartScreen();
+                    return const CartScreen();
                   }));
                 }),
           ),
         ],
       ),
-      drawer: AppDrawer(),
+      drawer: const AppDrawer(),
       body: _isLoading
-          ? Center(
+          ? const Center(
               child: CircularProgressIndicator(),
             )
           : ProductsGrid(_showOnlyFavorites),

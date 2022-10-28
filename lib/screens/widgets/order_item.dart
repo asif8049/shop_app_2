@@ -1,14 +1,13 @@
 import 'dart:math';
 
 import 'package:flutter/material.dart';
-import 'package:intl/intl.dart';
 
 import '../../providers/orders.dart';
 
 class OrderItemWidget extends StatefulWidget {
   final OrderItem order;
 
-  OrderItemWidget(this.order);
+  const OrderItemWidget(this.order);
 
   // const OrderItemWidget({Key? key, required this.order}) : super(key: key);
   @override
@@ -22,13 +21,18 @@ class _OrderItemState extends State<OrderItemWidget> {
   Widget build(BuildContext context) {
     print("Products length: ${widget.order.products.length}");
     return Card(
-      margin: EdgeInsets.all(10),
+      margin: const EdgeInsets.all(10),
       child: Column(
         children: <Widget>[
           ListTile(
             title: Text('\$${widget.order.amount}'),
             subtitle: Text(
-              DateFormat('dd/MM/yyyy hh:mm').format(widget.order.dateTime),
+              //display date in dd//mm//yy format
+              widget.order.dateTime.day.toString() +
+                  '/' +
+                  widget.order.dateTime.month.toString() +
+                  '/' +
+                  widget.order.dateTime.year.toString(),
             ),
             trailing: IconButton(
               icon: Icon(_expanded ? Icons.expand_less : Icons.expand_more),
@@ -41,7 +45,7 @@ class _OrderItemState extends State<OrderItemWidget> {
           ),
           _expanded
               ? Container(
-                  padding: EdgeInsets.symmetric(horizontal: 15, vertical: 4),
+                  padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 4),
                   height: max(widget.order.products.length * 20.0 + 100, 10),
                   child: ListView(
                     children: widget.order.products.map(
@@ -52,7 +56,7 @@ class _OrderItemState extends State<OrderItemWidget> {
                           children: <Widget>[
                             Text(
                               prod.product.title,
-                              style: TextStyle(
+                              style: const TextStyle(
                                 fontSize: 18,
                                 fontWeight: FontWeight.bold,
                               ),
@@ -60,7 +64,7 @@ class _OrderItemState extends State<OrderItemWidget> {
                             Text(
                               '${prod.quantity}x \$${prod.product.price}',
                               style:
-                                  TextStyle(fontSize: 18, color: Colors.grey),
+                                  const TextStyle(fontSize: 18, color: Colors.grey),
                             ),
                           ],
                         );
@@ -68,7 +72,7 @@ class _OrderItemState extends State<OrderItemWidget> {
                     ).toList(),
                   ),
                 )
-              : Container(
+              : const SizedBox(
                   width: 0,
                   height: 0,
                 ),
