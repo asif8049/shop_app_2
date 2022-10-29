@@ -1,3 +1,4 @@
+import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/material.dart';
 
 import '../models/product.dart';
@@ -29,10 +30,43 @@ class ProductItem extends StatelessWidget {
         footer: GridTileBar(
           backgroundColor: Colors.black87,
           leading: IconButton(
-            icon: Icon(
-                product.isFavorite ? Icons.favorite : Icons.favorite_border),
+            icon: StreamBuilder<DatabaseEvent>(
+                stream: FirebaseDatabase.instance
+                    .ref()
+                    .child('favorites')
+                    .child(product.id)
+                    .onValue,
+                builder: (context, snapshot) {
+                  if (snapshot.hasData) {
+                    return Icon(snapshot.data!.snapshot.exists
+                        ? Icons.favorite
+                        : Icons.favorite_border);
+                  }
+                  return Container();
+                }),
             color: Theme.of(context).colorScheme.secondary,
-            onPressed: () {},
+            onPressed: () {
+              FirebaseDatabase.instance
+                  .ref()
+                  .child('favorites')
+                  .child(product.id)
+                  .get()
+                  .then((value) {
+                if (value.exists) {
+                  FirebaseDatabase.instance
+                      .ref()
+                      .child('favorites')
+                      .child(product.id)
+                      .remove();
+                } else {
+                  FirebaseDatabase.instance
+                      .ref()
+                      .child('favorites')
+                      .child(product.id)
+                      .set(true);
+                }
+              });
+            },
           ),
           title: Text(
             product.title,
@@ -41,17 +75,12 @@ class ProductItem extends StatelessWidget {
           trailing: IconButton(
             icon: const Icon(Icons.shopping_cart),
             onPressed: () {
-              ScaffoldMessenger.of(context).hideCurrentSnackBar();
-              ScaffoldMessenger.of(context).showSnackBar(
-                SnackBar(
-                  content: const Text('Added item to cart!'),
-                  duration: const Duration(seconds: 2),
-                  action: SnackBarAction(
-                    label: 'UNDO',
-                    onPressed: () {},
-                  ),
-                ),
-              );
+              FirebaseDatabase.instance
+                  .ref()
+                  .child('cart')
+                  .child(
+                  DateTime.now().millisecondsSinceEpoch.toString())
+                  .set(product.toJson());
             },
             color: Theme.of(context).colorScheme.secondary,
           ),

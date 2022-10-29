@@ -1,11 +1,12 @@
+import 'dart:convert';
+
+import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
 import 'package:shop_app/screens/screens/cart_screen.dart';
 import 'package:shop_app/screens/widgets/Products_grid.dart';
 import 'package:shop_app/screens/widgets/app_drawer.dart';
-import 'package:shop_app/screens/widgets/badge.dart';
 
-import '../../providers/cart.dart';
+import '../models/product.dart';
 
 enum FilterOptions {
   Favorites,
@@ -56,33 +57,58 @@ class _ProductsOverviewScreenState extends State<ProductsOverviewScreen> {
               Icons.more_vert,
             ),
             itemBuilder: (_) => [
-              const PopupMenuItem(child: Text('Show All'), value: FilterOptions.All),
+              const PopupMenuItem(
+                  child: Text('Show All'), value: FilterOptions.All),
               const PopupMenuItem(
                 child: Text('Show All'),
                 value: FilterOptions.All,
               ),
             ],
           ),
-          Consumer<Cart>(
-            builder: (_, cart, ch) => Badge(
-              child: ch ??
-                  const SizedBox(
-                    width: 0,
-                    height: 0,
-                  ),
-              value: cart.itemCount.toString(),
-              color: Colors.red,
-            ),
-            child: IconButton(
-                icon: const Icon(
-                  Icons.shopping_cart,
+          GestureDetector(
+            onTap: () {
+              print("Cart Pressed");
+              Navigator.of(context).push(MaterialPageRoute(builder: (context) {
+                return CartScreen();
+              }));
+            },
+            child: Stack(
+              children: [
+                Padding(
+                  padding:
+                      const EdgeInsets.symmetric(vertical: 16.0, horizontal: 4),
+                  child: Icon(Icons.shopping_cart),
                 ),
-                onPressed: () {
-                  Navigator.of(context)
-                      .push(MaterialPageRoute(builder: (context) {
-                    return const CartScreen();
-                  }));
-                }),
+                Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: CircleAvatar(
+                    radius: 10,
+                    backgroundColor: Colors.red,
+                    child: StreamBuilder<DatabaseEvent>(
+                        stream: FirebaseDatabase.instance
+                            .ref()
+                            .child('cart')
+                            .onValue,
+                        builder: (context, snapshot) {
+                          if (snapshot.hasData) {
+                            List<Product> products = snapshot
+                                .data!.snapshot.children
+                                .map((e) => Product.fromJson(
+                                    jsonDecode(jsonEncode(e.value))))
+                                .toList();
+                            products.toSet().toList();
+                            return Text(
+                              products.length.toString(),
+                              style: TextStyle(
+                                  color: Colors.white, fontSize: 12),
+                            );
+                          }
+                          return Container();
+                        }),
+                  ),
+                )
+              ],
+            ),
           ),
         ],
       ),
