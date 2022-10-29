@@ -1,7 +1,8 @@
-import 'package:flutter/cupertino.dart';
-import 'package:provider/provider.dart';
+import 'dart:convert';
 
-import '../../providers/products.dart';
+import 'package:firebase_database/firebase_database.dart';
+import 'package:flutter/cupertino.dart';
+
 import '../models/product.dart';
 import '../widgets/product_item.dart';
 
@@ -12,27 +13,26 @@ class ProductsGrid extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    List<Product> productsData = Provider.of<Products>(context).loadedProducts;
-    List<Product> products = productsData;
-    if (showFavs) {
-      products.clear();
-      for (var element in productsData) {
-        if (element.isFavorite) {
-          products.add(element);
-        }
-      }
-    }
-
-    return GridView.builder(
-      padding: const EdgeInsets.all(10.0),
-      itemCount: products.length,
-      itemBuilder: (ctx, i) => ProductItem(product: products[i]),
-      gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-        crossAxisCount: 2,
-        childAspectRatio: 3 / 2,
-        crossAxisSpacing: 10,
-        mainAxisSpacing: 10,
-      ),
-    );
+    return StreamBuilder<DatabaseEvent>(
+        stream: FirebaseDatabase.instance.ref().child('products').onValue,
+        builder: (context, snapshot) {
+          if (snapshot.hasData) {
+            List<Product> products = snapshot.data!.snapshot.children
+                .map((e) => Product.fromJson(jsonDecode(jsonEncode(e.value))))
+                .toList();
+            return GridView.builder(
+              padding: const EdgeInsets.all(10.0),
+              itemCount: products.length,
+              itemBuilder: (ctx, i) => ProductItem(product: products[i]),
+              gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+                crossAxisCount: 2,
+                childAspectRatio: 3 / 2,
+                crossAxisSpacing: 10,
+                mainAxisSpacing: 10,
+              ),
+            );
+          }
+          return Container();
+        });
   }
 }

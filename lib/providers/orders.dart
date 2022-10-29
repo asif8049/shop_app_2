@@ -1,5 +1,6 @@
 import 'dart:convert';
 
+import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/foundation.dart';
 import 'package:http/http.dart' as http;
 
@@ -17,6 +18,21 @@ class OrderItem {
     required this.products,
     required this.dateTime,
   });
+
+  // from json
+  OrderItem.fromJson(Map<String, dynamic> json)
+      : id = json['id'],
+        amount = json['amount'],
+        products = json['products'],
+        dateTime = json['dateTime'];
+
+  // to json
+  Map<String, dynamic> toJson() => {
+        'id': id,
+        'amount': amount,
+        'products': products,
+        'dateTime': dateTime,
+      };
 }
 
 class Orders with ChangeNotifier {
@@ -35,7 +51,11 @@ class Orders with ChangeNotifier {
   }
 
   Future<void> fetchAndSetOrders() async {
-    const url =
+    FirebaseDatabase.instance.ref().child("order").onValue.listen((event) {
+      _orders.clear();
+      _orders = event.snapshot.children.map((e) => OrderItem.fromJson(jsonDecode(jsonEncode(e.value)))).toList();
+    });
+    /*const url =
         'https://shop-flutter-42adb-default-rtdb.firebaseio.com/order.json';
     final response = await http.get(Uri.parse(url));
     final List<OrderItem> loadedOrders = [];
@@ -58,7 +78,7 @@ class Orders with ChangeNotifier {
       );
     });
     _orders = loadedOrders.reversed.toList();
-    notifyListeners();
+    notifyListeners();*/
   }
 
   /*Future<void> fetchAndSetOrders() async {
