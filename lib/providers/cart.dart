@@ -21,6 +21,17 @@ class CartItem {
         'product': product.toJson(),
         'quantity': quantity,
       };
+
+  //copyWith
+  CartItem copyWith({
+    Product? product,
+    int? quantity,
+  }) {
+    return CartItem(
+      product: product ?? this.product,
+      quantity: quantity ?? this.quantity,
+    );
+  }
 }
 
 class Cart with ChangeNotifier {

@@ -19,19 +19,21 @@ class OrderItem {
     required this.dateTime,
   });
 
-  // from json
+//from json
   OrderItem.fromJson(Map<String, dynamic> json)
       : id = json['id'],
         amount = json['amount'],
-        products = json['products'],
-        dateTime = json['dateTime'];
+        products = (json['products'] as List)
+            .map((e) => CartItem.fromJson(e))
+            .toList(),
+        dateTime = DateTime.parse(json['dateTime']);
 
-  // to json
+  //to json
   Map<String, dynamic> toJson() => {
         'id': id,
         'amount': amount,
-        'products': products,
-        'dateTime': dateTime,
+        'products': products.map((e) => e.toJson()).toList(),
+        'dateTime': dateTime.toIso8601String(),
       };
 }
 
@@ -53,7 +55,9 @@ class Orders with ChangeNotifier {
   Future<void> fetchAndSetOrders() async {
     FirebaseDatabase.instance.ref().child("order").onValue.listen((event) {
       _orders.clear();
-      _orders = event.snapshot.children.map((e) => OrderItem.fromJson(jsonDecode(jsonEncode(e.value)))).toList();
+      _orders = event.snapshot.children
+          .map((e) => OrderItem.fromJson(jsonDecode(jsonEncode(e.value))))
+          .toList();
     });
     /*const url =
         'https://shop-flutter-42adb-default-rtdb.firebaseio.com/order.json';
