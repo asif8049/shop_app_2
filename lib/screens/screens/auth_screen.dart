@@ -18,15 +18,15 @@ class AuthScreen extends StatelessWidget {
         children: <Widget>[
           Container(
             decoration: BoxDecoration(
-                gradient: LinearGradient(
-              colors: [
-                Color.fromRGBO(215, 117, 255, 1).withOpacity(0.5),
-                Color.fromRGBO(255, 118, 117, 1).withOpacity(0.9),
-              ],
-              begin: Alignment.topLeft,
-              end: Alignment.bottomRight,
-              stops: [0, 1],
-            ),
+              gradient: LinearGradient(
+                colors: [
+                  Color.fromRGBO(215, 117, 255, 1).withOpacity(0.5),
+                  Color.fromRGBO(255, 118, 117, 1).withOpacity(0.9),
+                ],
+                begin: Alignment.topLeft,
+                end: Alignment.bottomRight,
+                stops: [0, 1],
+              ),
             ),
           ),
           SingleChildScrollView(
@@ -41,10 +41,10 @@ class AuthScreen extends StatelessWidget {
                     child: Container(
                       margin: EdgeInsets.only(bottom: 20.0),
                       padding:
-                        EdgeInsets.symmetric(vertical: 8.0, horizontal: 94.0),
-                        transform: Matrix4.rotationZ(-8 * pi / 180)
-                          ..translate(-10.0),
-                     //   ..translate(-10, 0),
+                          EdgeInsets.symmetric(vertical: 8.0, horizontal: 94.0),
+                      transform: Matrix4.rotationZ(-8 * pi / 180)
+                        ..translate(-10.0),
+                      //   ..translate(-10, 0),
                       decoration: BoxDecoration(
                         borderRadius: BorderRadius.circular(20),
                         color: Colors.deepOrange.shade900,
@@ -52,14 +52,14 @@ class AuthScreen extends StatelessWidget {
                           BoxShadow(
                             blurRadius: 8,
                             color: Colors.black26,
-                            offset: Offset(0,2),
+                            offset: Offset(0, 2),
                           )
                         ],
                       ),
                       child: Text(
                         'MyShop',
                         style: TextStyle(
-                          color: Theme.of(context).accentTextTheme.title.color,
+                          color: Theme.of(context).secondaryHeaderColor,
                           fontSize: 50,
                           fontFamily: 'Anton',
                           fontWeight: FontWeight.normal,
@@ -83,7 +83,7 @@ class AuthScreen extends StatelessWidget {
 
 class AuthCard extends StatefulWidget {
   const AuthCard({
-    key key,
+    Key? key,
   }) : super(key: key);
 
   @override
@@ -95,19 +95,19 @@ class _AuthCardState extends State<AuthCard> {
   AuthMode _authMode = AuthMode.Login;
   Map<String, String> _authData = {
     'email': '',
-    'password':'',
+    'password': '',
   };
   var _isLoading = false;
   final _passwordController = TextEditingController();
 
   void _submit() {
-    if (!_formkey.currentState.validate()) {
+    if (!_formkey.currentState!.validate()) {
       // Invalid!
       return;
     }
-    _formkey.currentState.save();
+
     setState(() {
-      _isLoading =true;
+      _isLoading = true;
     });
     if (_authMode == AuthMode.Login) {
       // Log user in
@@ -140,9 +140,9 @@ class _AuthCardState extends State<AuthCard> {
       ),
       elevation: 8.0,
       child: Container(
-        height: _authMode == .Signup ? 320 : 260,
+        height: _authMode == AuthMode.Signup ? 320 : 260,
         constraints:
-          BoxConstraints(minHeight: _authMode == AuthMode.Signup ? 320 : 26),
+            BoxConstraints(minHeight: _authMode == AuthMode.Signup ? 320 : 26),
         width: deviceSize.width * 0.75,
         padding: EdgeInsets.all(16.0),
         child: Form(
@@ -154,12 +154,12 @@ class _AuthCardState extends State<AuthCard> {
                   decoration: InputDecoration(labelText: 'E-mail'),
                   keyboardType: TextInputType.emailAddress,
                   validator: (value) {
-                    if (value.isEmpty || !value.contains('@')) {
+                    if (value!.isEmpty || !value!.contains('@')) {
                       return 'Invalid email!';
                     }
                   },
                   onSaved: (value) {
-                    _authData['email'] = value;
+                    _authData['email'] = value!;
                   },
                 ),
                 TextFormField(
@@ -167,54 +167,44 @@ class _AuthCardState extends State<AuthCard> {
                   obscureText: true,
                   controller: _passwordController,
                   validator: (value) {
-                    if (value.isEmpty || value.length < 5) {
-                      return'Password is too short!';
+                    if (value!.isEmpty || value!.length < 5) {
+                      return 'Password is too short!';
                     }
                   },
                   onSaved: (value) {
-                    _authData['password'] = value;
+                    _authData['password'] = value!;
                   },
                 ),
-                if(_authData == AuthMode.signup)
+                if (_authData == AuthMode.Signup)
                   TextFormField(
                     enabled: _authMode == AuthMode.Signup,
                     decoration: InputDecoration(labelText: 'confirm Password'),
                     obscureText: true,
                     validator: _authMode == AuthMode.Signup
-                    ? (value) {
-                      if (value != _passwordController.text) {
-                        return 'Passwords do not match!';
-                      }
-                    }
-                    : null,
+                        ? (value) {
+                            if (value != _passwordController.text) {
+                              return 'Passwords do not match!';
+                            }
+                          }
+                        : null,
                   ),
                 SizedBox(
                   height: 20,
                 ),
-                if(_isLoading)
+                if (_isLoading)
                   CircularProgressIndicator()
                 else
-                  RaisedButton(
+                  ElevatedButton(
                     child:
-                      Text(_authMode == AuthMode.Login ? 'LOGIN' : 'SIGN UP'),
-                    onPressed: _submit(),
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(30),
-                    ),
-                    padding:
-                      EdgeInsets.symmetric(horizontal: 30.0, vertical: 8.0),
-                    color:Theme.of(context).primaryColor,
-                    textColor: Theme.of(context).primaryIconTheme,button.color,
-
+                        Text(_authMode == AuthMode.Login ? 'LOGIN' : 'SIGN UP'),
+                    onPressed: () {
+                      _submit();
+                    },
                   ), // RaisedButton
-                FlatButton(
+                TextButton(
                   child: Text(
-                    '${_authMode == AuthMode.Login ? 'SIGNUP' : 'LOGIN'} INSTEAD'),
-                     onPressed: _switchAuthMode,
-                     padding: EdgeInsets.symmetric(horizontal: 30.0, vertical: 4),
-                     materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,
-                     textColor:Theme.of(context).primaryColor,
-                  )
+                      '${_authMode == AuthMode.Login ? 'SIGNUP' : 'LOGIN'} INSTEAD'),
+                  onPressed: _switchAuthMode,
                 )
               ],
             ),
@@ -224,23 +214,3 @@ class _AuthCardState extends State<AuthCard> {
     );
   }
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
