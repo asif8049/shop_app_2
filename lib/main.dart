@@ -6,6 +6,7 @@ import 'package:shop_app/providers/products.dart';
 import './providers/cart.dart';
 import './providers/orders.dart';
 import 'screens/screens/products_overview_screen.dart';
+import './screens/auth_screen.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -43,9 +44,11 @@ class MyApp extends StatelessWidget {
         // or simply save your changes to "hot reload" in a Flutter IDE).
         // Notice that the counter didn't reset back to zero; the application
         // is not restarted.
-        fontFamily: 'Lato', colorScheme: ColorScheme.fromSwatch(primarySwatch: Colors.purple).copyWith(secondary: Colors.deepOrange),
+        fontFamily: 'Lato',
+        colorScheme: ColorScheme.fromSwatch(primarySwatch: Colors.purple)
+            .copyWith(secondary: Colors.deepOrange),
       ),
-      home: ProductsOverviewScreen(),
+      home: AuthScreen(),
     );
   }
 }
