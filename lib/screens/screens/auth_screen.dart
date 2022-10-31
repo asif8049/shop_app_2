@@ -1,6 +1,7 @@
 import 'dart:math';
 
 import 'package:flutter/material.dart';
+import 'package:shop_app/screens/screens/products_overview_screen.dart';
 
 enum AuthMode { Login, Signup }
 
@@ -198,7 +199,11 @@ class _AuthCardState extends State<AuthCard> {
                     child:
                         Text(_authMode == AuthMode.Login ? 'LOGIN' : 'SIGN UP'),
                     onPressed: () {
-                      _submit();
+                      /*_submit();*/
+                      Navigator.of(context).pushReplacement(
+                          MaterialPageRoute(builder: (context) {
+                        return ProductsOverviewScreen();
+                      }));
                     },
                   ), // RaisedButton
                 TextButton(

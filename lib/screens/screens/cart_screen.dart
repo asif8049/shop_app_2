@@ -143,7 +143,9 @@ class _CartScreenState extends State<CartScreen>
                             (element) => element.product.id == product.id);
                         int quantity = cart[indexWhere].quantity;
 
-                        cart[indexWhere].copyWith(quantity: quantity + 1);
+                        cart.replaceRange(indexWhere, indexWhere + 1, [
+                          cart[indexWhere].copyWith(quantity: quantity + 1)
+                        ]);
                       } else {
                         cart.add(CartItem(product: product, quantity: 1));
                       }
@@ -201,14 +203,13 @@ class _OrderButtonState extends State<OrderButton> {
             List<CartItem> cart = [];
             for (var product in products) {
               if (cart.any((element) => element.product.id == product.id)) {
-                cart
-                    .firstWhere((element) => element.product.id == product.id)
-                    .copyWith(
-                        quantity: cart
-                                .firstWhere((element) =>
-                                    element.product.id == product.id)
-                                .quantity +
-                            1);
+                int indexWhere = cart
+                    .indexWhere((element) => element.product.id == product.id);
+
+                int quantity = cart[indexWhere].quantity;
+
+                cart.replaceRange(indexWhere, indexWhere + 1,
+                    [cart[indexWhere].copyWith(quantity: quantity + 1)]);
               } else {
                 cart.add(CartItem(product: product, quantity: 1));
               }

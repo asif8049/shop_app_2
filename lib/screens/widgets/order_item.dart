@@ -19,7 +19,9 @@ class _OrderItemState extends State<OrderItemWidget> {
 
   @override
   Widget build(BuildContext context) {
-    print("Products length: ${widget.order.products.length}");
+    widget.order.products.forEach((element) {
+      print("quantity: ${element.quantity}");
+    });
     return Card(
       margin: const EdgeInsets.all(10),
       child: Column(
@@ -45,26 +47,27 @@ class _OrderItemState extends State<OrderItemWidget> {
           ),
           _expanded
               ? Container(
-                  padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 4),
+                  padding:
+                      const EdgeInsets.symmetric(horizontal: 15, vertical: 4),
                   height: max(widget.order.products.length * 20.0 + 100, 10),
                   child: ListView(
                     children: widget.order.products.map(
-                      (prod) {
-                        print("Product: ${prod.product.title}");
+                      (cartItem) {
+                        print("Product: ${cartItem.product.title}");
                         return Row(
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: <Widget>[
                             Text(
-                              prod.product.title,
+                              cartItem.product.title,
                               style: const TextStyle(
                                 fontSize: 18,
                                 fontWeight: FontWeight.bold,
                               ),
                             ),
                             Text(
-                              '${prod.quantity}x \$${prod.product.price}',
-                              style:
-                                  const TextStyle(fontSize: 18, color: Colors.grey),
+                              '${cartItem.quantity}x \$${cartItem.product.price}',
+                              style: const TextStyle(
+                                  fontSize: 18, color: Colors.grey),
                             ),
                           ],
                         );

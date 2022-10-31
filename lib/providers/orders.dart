@@ -22,7 +22,7 @@ class OrderItem {
 //from json
   OrderItem.fromJson(Map<String, dynamic> json)
       : id = json['id'],
-        amount = json['amount'],
+        amount = double.parse(json['amount'].toString()),
         products = (json['products'] as List)
             .map((e) => CartItem.fromJson(e))
             .toList(),
