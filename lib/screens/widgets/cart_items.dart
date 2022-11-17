@@ -34,7 +34,8 @@ class CartItems extends StatelessWidget {
           context: context,
           builder: (ctx) => AlertDialog(
               title: const Text('Are you sure?'),
-              content: const Text('Do you want to remove the item from the cart?'),
+              content:
+                  const Text('Do you want to remove the item from the cart?'),
               actions: <Widget>[
                 TextButton(
                   child: const Text('No'),

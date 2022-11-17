@@ -78,8 +78,7 @@ class ProductItem extends StatelessWidget {
               FirebaseDatabase.instance
                   .ref()
                   .child('cart')
-                  .child(
-                  DateTime.now().millisecondsSinceEpoch.toString())
+                  .child(DateTime.now().millisecondsSinceEpoch.toString())
                   .set(product.toJson());
             },
             color: Theme.of(context).colorScheme.secondary,

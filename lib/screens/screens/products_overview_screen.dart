@@ -99,8 +99,8 @@ class _ProductsOverviewScreenState extends State<ProductsOverviewScreen> {
                             products.toSet().toList();
                             return Text(
                               products.length.toString(),
-                              style: TextStyle(
-                                  color: Colors.white, fontSize: 12),
+                              style:
+                                  TextStyle(color: Colors.white, fontSize: 12),
                             );
                           }
                           return Container();

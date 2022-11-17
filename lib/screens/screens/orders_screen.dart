@@ -8,7 +8,6 @@ import 'package:shop_app/screens/widgets/order_item.dart';
 import '../widgets/app_drawer.dart';
 
 class OrdersScreen extends StatefulWidget {
-
   const OrdersScreen({Key? key}) : super(key: key);
 
   @override
