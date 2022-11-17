@@ -2,7 +2,6 @@ import 'dart:convert';
 import 'dart:io';
 
 import 'package:flutter/widgets.dart';
-
 import 'package:http/http.dart' as http;
 
 class Auth with ChangeNotifier {
@@ -46,8 +45,7 @@ class Auth with ChangeNotifier {
     _ueseId = responseData['localId'];
     _expiryDate = DateTime.now().add(
       Duration(
-        seconds: int.parse(responseData['expiresIn']
-        ),
+        seconds: int.parse(responseData['expiresIn']),
       ),
     );
     notifyListeners();

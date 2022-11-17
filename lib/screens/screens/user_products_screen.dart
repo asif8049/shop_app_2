@@ -31,11 +31,7 @@ class UserProductsScreen extends StatelessWidget {
       body: Padding(
         padding: const EdgeInsets.all(8),
         child: StreamBuilder<DatabaseEvent>(
-            stream: FirebaseDatabase.instance
-                .refFromURL(
-                    "https://shop-flutter-42adb-default-rtdb.firebaseio.com/")
-                .child('products')
-                .onValue,
+            stream: FirebaseDatabase.instance.ref().child('products').onValue,
             builder: (context, snapshot) {
               if (snapshot.hasData) {
                 List<Product> products = snapshot.data!.snapshot.children

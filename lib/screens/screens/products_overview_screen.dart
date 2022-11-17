@@ -87,7 +87,7 @@ class _ProductsOverviewScreenState extends State<ProductsOverviewScreen> {
                     child: StreamBuilder<DatabaseEvent>(
                         stream: FirebaseDatabase.instance
                             .ref()
-                            .child('cart')
+                            .child('products')
                             .onValue,
                         builder: (context, snapshot) {
                           if (snapshot.hasData) {

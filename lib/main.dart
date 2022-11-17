@@ -4,11 +4,8 @@ import 'package:provider/provider.dart';
 import 'package:shop_app/providers/auth.dart';
 import 'package:shop_app/providers/products.dart';
 import 'package:shop_app/screens/screens/auth_screen.dart';
-import 'package:shop_app/screens/screens/edit_product_screen.dart';
-import 'package:shop_app/screens/screens/products_details_screen.dart';
 import 'package:shop_app/screens/screens/products_overview_screen.dart';
-import 'package:shop_app/screens/screens/user_products_screen.dart';
-import './providers/auth.dart';
+
 import './providers/cart.dart';
 import './providers/orders.dart';
 
