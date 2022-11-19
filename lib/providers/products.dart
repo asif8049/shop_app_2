@@ -76,7 +76,7 @@ class Products with ChangeNotifier {
   Future<void> addProduct(Product product) async {
     print("Add product called");
     await FirebaseDatabase.instance
-        .refFromURL("https://shop-flutter-42adb-default-rtdb.firebaseio.com/")
+        .refFromURL ("https://shop-flutter-42adb-default-rtdb.firebaseio.com/products.json?authToken")
         .child('products')
         .child(product.id)
         .set(product.toJson())
@@ -130,7 +130,7 @@ class Products with ChangeNotifier {
 
   Future<void> updateProduct(String id, Product newProduct) async {
     await FirebaseDatabase.instance
-        .refFromURL("https://shop-flutter-42adb-default-rtdb.firebaseio.com/")
+        .ref()
         .child('products')
         .child(id)
         .set(newProduct.toJson());
@@ -154,10 +154,10 @@ class Products with ChangeNotifier {
   }
 
   Future<void> deleteProduct(String id) async {
-    /*print("Product ID: $id");
-    final url =
-        'https://shop-flutter-42adb-default-rtdb.firebaseio.com/products/$id.json';
-    http.delete(Uri.parse(url)).then((response) {
+
+    print("Product ID: $id");
+
+   /* http.delete(Uri.parse(url)).then((response) {
       int productIndex = loadedProducts.indexWhere((prod) => prod.id == id);
       print("Product Index: $productIndex");
       loadedProducts.removeWhere((prod) => prod.id == id);

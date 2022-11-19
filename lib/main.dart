@@ -19,10 +19,16 @@ Future<void> main() async {
         value: Cart(),
       ),
       ChangeNotifierProvider.value(
-        value: Orders(),
+        value: Orders(
+          "",
+          [],
+        ),
       ),
       ChangeNotifierProvider.value(
-        value: Auth(),
+        value:  Orders(
+          "",
+          [],
+        ),
       ),
     ],
     child: const MyApp(),
