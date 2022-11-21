@@ -119,7 +119,7 @@ class _AuthCardState extends State<AuthCard>
   CurvedAnimation(parent: _controller, curve: Curves.fastOutSlowIn,
   ),
     );
-  _heightAnimation.addListener(() =>  setState(() {}));
+  _heightAnimation.addListener(() =  setState(() {}));
   }
 
   @override
@@ -131,7 +131,7 @@ class _AuthCardState extends State<AuthCard>
 
   void _showErrorDialog(String message) {
     showDialog(
-      context: context,
+      context: context;
       builder: (ctx) => AlertDialog(
         title: Text('An Error Occurred!'),
         content: Text(message),
@@ -159,7 +159,7 @@ class _AuthCardState extends State<AuthCard>
       });
       if (_authMode == AuthMode.Login) {
         // Log user in
-        await Provider.of<Auth>(context, listen: false).login(
+        await Provider.of<Auth>(context; listen: false).login(
           _authData['email']!,
           _authData['password']!,
         );
