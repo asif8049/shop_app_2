@@ -94,7 +94,7 @@ class AuthCard extends StatefulWidget {
 
 class _AuthCardState extends State<AuthCard>
     with SingleTickerProviderStateMixin {
-  final GlobalKey<FormState> _Formkey = GlobalKey();
+  final GlobalKey<FormState> _formKey = GlobalKey();
   AuthMode _authMode = AuthMode.Login;
   Map<String, String> _authData = {
     'email': '',
@@ -102,8 +102,8 @@ class _AuthCardState extends State<AuthCard>
   };
   bool _isLoading = false;
   final _passwordController = TextEditingController();
-  AnimationController _controller;
-  Animation<Size> _heightAnimation;
+  late AnimationController _controller;
+  late Animation<Size> _heightAnimation;
 
   @override
   void initState() {
@@ -111,16 +111,18 @@ class _AuthCardState extends State<AuthCard>
     _controller = AnimationController(
       vsync: this,
       duration: Duration(microseconds: 300),
-    ),
+
     );
-  }
-      _heightAnimation = Tween<Size>(
-  begin: Size(double.infinity, 320), end: Size(double.infinity, 320)).animate(
-  CurvedAnimation(parent: _controller, curve: Curves.fastOutSlowIn,
-  ),
+
+    _heightAnimation = Tween<Size>(
+        begin: Size(double.infinity, 320), end: Size(double.infinity, 320))
+        .animate(
+      CurvedAnimation(parent: _controller, curve: Curves.fastOutSlowIn,
+      ),
     );
-  _heightAnimation.addListener(() =  setState(() {}));
+    _heightAnimation.addListener(() => setState(() {}));
   }
+
 
   @override
   void dispose(){
@@ -129,9 +131,9 @@ class _AuthCardState extends State<AuthCard>
     _controller.dispose();
   }
 
-  void _showErrorDialog(String message) {
+  void _showErrorDialog(String message, BuildContext context) {
     showDialog(
-      context: context;
+
       builder: (ctx) => AlertDialog(
         title: Text('An Error Occurred!'),
         content: Text(message),
@@ -143,23 +145,23 @@ class _AuthCardState extends State<AuthCard>
             },
           )
         ],
-      ),
+      ), context: context,
     );
   }
 
-  Future<void> _submit() async {.
+  Future<void> _submit() async {
     try {
-      if (!_Formkey.currentState!.validate()) {
+      if (!_formKey.currentState!.validate()) {
         // Invalid!
         return;
       }
-      _Formkey.currentState!.save();
+      _formKey.currentState!.save();
       setState(() {
         _isLoading = true;
       });
       if (_authMode == AuthMode.Login) {
         // Log user in
-        await Provider.of<Auth>(context; listen: false).login(
+        await Provider.of<Auth>(context, listen: false).login(
           _authData['email']!,
           _authData['password']!,
         );
@@ -183,7 +185,7 @@ class _AuthCardState extends State<AuthCard>
       } else if (error.toString().contains('INVALID_PASSWORD')) {
         errorMessage = 'Invalid password.';
       }
-      _showErrorDialog(errorMessage);
+      _showErrorDialog(errorMessage, context);
     }
 
     setState(() {
@@ -221,7 +223,7 @@ class _AuthCardState extends State<AuthCard>
         width: deviceSize.width * 0.75,
         padding: EdgeInsets.all(16.0),
         child: Form(
-          key: _Formkey,
+          key: _formKey,
           child: SingleChildScrollView(
             child: Column(
               children: <Widget>[
