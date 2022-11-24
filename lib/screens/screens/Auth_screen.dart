@@ -105,6 +105,7 @@ class _AuthCardState extends State<AuthCard>
   late AnimationController _controller;
   late Animation<Offset> _slideAnimation;
   late Animation<double> _opacityAnimation;
+  late Animation<double> _heightAnimation;
 
   @override
   void initState() {
@@ -114,7 +115,7 @@ class _AuthCardState extends State<AuthCard>
       duration: Duration(microseconds: 300),
     );
 
-    _SlideAnimation = Tween<Offset>(
+    _slideAnimation = Tween<Offset>(
             begin: Offset(0, -1.5), end: Offset(0,0))
         .animate(
       CurvedAnimation(
@@ -218,48 +219,37 @@ class _AuthCardState extends State<AuthCard>
       ),
       elevation: 8.0,
       child: AnimatedBuilder(
-        duration: Duration(milliseconds: 300),
-        curve: Curves.easeIn,
-        height: _authMode == Authmode.Signup ? 320 : 260,
-
-            // height: _authMode == AuthMode.Signup ? 320 : 260,
-            height: _heightAnimation.value.height,
-            constraints:
-                BoxConstraints(minHeight: _authMode == AuthMode.Signup ? 320 : 260),
-            width: deviceSize.width * 0.75,
-            padding: EdgeInsets.all(16.0),
-            animation: null,
-            child: ch),
-        child: Form(
-          key: _formKey,
-          child: SingleChildScrollView(
-            child: Column(
-              children: <Widget>[
-                TextFormField(
-                  decoration: InputDecoration(labelText: 'E-Mail'),
-                  keyboardType: TextInputType.emailAddress,
-                  validator: (value) {
-                    if (value!.isEmpty || !value.contains('@')) {
-                      return 'Invalid email!';
-                    }
-                  },
-                  onSaved: (value) {
-                    _authData['email'] = '';
-                  },
-                ),
-                TextFormField(
-                  decoration: InputDecoration(labelText: 'password'),
-                  obscureText: true,
-                  controller: _passwordController,
-                  validator: (value) {
-                    if (value!.isEmpty || value.length < 5) {
-                      return 'Password is too short!';
-                    }
-                  },
-                  onSaved: (value) {
-                    _authData['password'] = '';
-                  },
-                ),
+        builder: (context, _) {
+          return Form(
+            key: _formKey,
+            child: SingleChildScrollView(
+              child: Column(
+                children: <Widget>[
+                  TextFormField(
+                    decoration: InputDecoration(labelText: 'E-Mail'),
+                    keyboardType: TextInputType.emailAddress,
+                    validator: (value) {
+                      if (value!.isEmpty || !value.contains('@')) {
+                        return 'Invalid email!';
+                      }
+                    },
+                    onSaved: (value) {
+                      _authData['email'] = '';
+                    },
+                  ),
+                  TextFormField(
+                    decoration: InputDecoration(labelText: 'password'),
+                    obscureText: true,
+                    controller: _passwordController,
+                    validator: (value) {
+                      if (value!.isEmpty || value.length < 5) {
+                        return 'Password is too short!';
+                      }
+                    },
+                    onSaved: (value) {
+                      _authData['password'] = '';
+                    },
+                  ),
 
                   AnimatedContainer(
                     constraints: BoxConstraints(minHeight: _authMode == AuthMode.Signup ? 60 : 0, maxHeight: _authMode == AuthMode.Signup ? 120 : 0,),
@@ -275,38 +265,40 @@ class _AuthCardState extends State<AuthCard>
                           obscureText: true,
                           validator: _authMode == AuthMode.Signup
                               ? (value) {
-                                  if (value != _passwordController.text) {
-                                    return 'Passwords do not match!';
-                                  }
-                                }
+                            if (value != _passwordController.text) {
+                              return 'Passwords do not match!';
+                            }
+                          }
                               : null,
                         ),
                       ),
                     ),
                   ),
-                SizedBox(
-                  height: 20,
-                ),
-                if (_isLoading)
-                  CircularProgressIndicator()
-                else
-                  ElevatedButton(
-                    child:
-                        Text(_authMode == AuthMode.Login ? 'LOGIN' : 'SIGN UP'),
-                    onPressed: _submit,
+                  SizedBox(
+                    height: 20,
                   ),
-                TextButton(
-                  child: Text(
-                      '${_authMode == AuthMode.Login ? 'SIGNUP' : 'LOGIN'} INSTED'),
-                  onPressed: () {
-                    _switchAuthMode();
-                  },
-                ),
-              ],
+                  if (_isLoading)
+                    CircularProgressIndicator()
+                  else
+                    ElevatedButton(
+                      child:
+                      Text(_authMode == AuthMode.Login ? 'LOGIN' : 'SIGN UP'),
+                      onPressed: _submit,
+                    ),
+                  TextButton(
+                    child: Text(
+                        '${_authMode == AuthMode.Login ? 'SIGNUP' : 'LOGIN'} INSTED'),
+                    onPressed: () {
+                      _switchAuthMode();
+                    },
+                  ),
+                ],
+              ),
             ),
-          ),
-        ),
-      ),
-    );
+          );
+        }, animation: _heightAnimation,
+      )
+      );
+
   }
 }
