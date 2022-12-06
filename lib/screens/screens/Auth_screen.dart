@@ -128,13 +128,12 @@ class _AuthCardState extends State<AuthCard>
         curve: Curves.easeIn,
       ),
     );
-    _heightAnimation =
-        Tween(begin: 0.0, end: 1.0).animate(
-          CurvedAnimation(
-            parent: _controller,
-            curve: Curves.easeIn,
-          ),
-        );
+    _heightAnimation = Tween(begin: 0.0, end: 1.0).animate(
+      CurvedAnimation(
+        parent: _controller,
+        curve: Curves.easeIn,
+      ),
+    );
     _heightAnimation.addListener(() => setState(() {}));
   }
 
