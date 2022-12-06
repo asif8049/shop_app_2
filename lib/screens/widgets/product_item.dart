@@ -1,11 +1,11 @@
 import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-
 import '../../providers/auth.dart';
 import '../../providers/cart.dart';
 import '../models/product.dart';
 import '../screens/products_details_screen.dart';
+
 class ProductItem extends StatelessWidget {
   final Product product;
 
@@ -27,9 +27,13 @@ class ProductItem extends StatelessWidget {
               );
             }));
           },
-          child: Image.network(
-            product.imageUrl,
-            fit: BoxFit.cover,
+          child: Hero(
+            tag: product.id,
+            child: FadeInImage(
+              placeholder: AssetImage('assets/images/product-placeholder.png'),
+              image: NetworkImage(product.imageUrl),
+              fit: BoxFit.cover,
+            ),
           ),
         ),
         footer: GridTileBar(

@@ -24,18 +24,26 @@ class ProductDetailScreen extends StatelessWidget {
           builder: (context, snapshot) {
             if (snapshot.hasData) {
               Product loadedProduct = Product.fromJson(
-                  jsonDecode(jsonEncode(snapshot.data!.snapshot.value)));
-              return SingleChildScrollView(
-                child: Column(
-                  children: <Widget>[
-                    SizedBox(
-                      height: 300,
-                      width: double.infinity,
+                jsonDecode(jsonEncode(snapshot.data!.snapshot.value)),
+              );
+
+              return CustomScrollView(slivers: <Widget>[
+                SliverAppBar(
+                  expandedHeight: 300,
+                  pinned: true,
+                  flexibleSpace: FlexibleSpaceBar(
+                    title: Text(loadedProduct.title),
+                    background: Hero(
+                      tag: loadedProduct.id,
                       child: Image.network(
                         loadedProduct.imageUrl,
                         fit: BoxFit.cover,
                       ),
                     ),
+                  ),
+                ),
+                SliverList(
+                  delegate: SliverChildListDelegate([
                     const SizedBox(height: 10),
                     Text(
                       '\$${loadedProduct.price}',
@@ -43,6 +51,7 @@ class ProductDetailScreen extends StatelessWidget {
                         color: Colors.grey,
                         fontSize: 20,
                       ),
+                      textAlign: TextAlign.center,
                     ),
                     const SizedBox(
                       height: 10,
@@ -55,11 +64,15 @@ class ProductDetailScreen extends StatelessWidget {
                         textAlign: TextAlign.center,
                         softWrap: true,
                       ),
-                    )
-                  ],
+                    ),
+                    SizedBox(
+                      height: 800,
+                    ),
+                  ]),
                 ),
-              );
+              ]);
             }
+
             return Container();
           }),
     );

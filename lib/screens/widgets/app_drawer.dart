@@ -3,6 +3,7 @@ import 'package:shop_app/screens/screens/products_overview_screen.dart';
 
 import '../screens/orders_screen.dart';
 import '../screens/user_products_screen.dart';
+import '../helpers/custom_route.dart';
 
 class AppDrawer extends StatelessWidget {
   const AppDrawer({Key? key}) : super(key: key);
@@ -21,7 +22,9 @@ class AppDrawer extends StatelessWidget {
             leading: const Icon(Icons.shop),
             title: const Text('Orders'),
             onTap: () {
+
               Navigator.of(context).push(MaterialPageRoute(builder: (context) {
+
                 return const OrdersScreen();
               }));
             },

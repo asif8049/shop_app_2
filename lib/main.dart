@@ -8,6 +8,7 @@ import 'package:shop_app/screens/screens/products_overview_screen.dart';
 
 import './providers/cart.dart';
 import './providers/orders.dart';
+import './helpers/custom_route.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -41,17 +42,18 @@ class MyApp extends StatelessWidget {
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
-    return Consumer<Auth>(
-      builder: (ctx, auth, _) => MaterialApp(
-        title: 'MyShop',
-        theme: ThemeData(
-          fontFamily: 'Lato',
-          colorScheme: ColorScheme.fromSwatch(primarySwatch: Colors.purple)
-              .copyWith(secondary: Colors.deepOrange),
-        ),
-        home: auth.isAuth ? ProductsOverviewScreen() : AuthScreen(),
-        routes: {},
+    return MaterialApp(
+      title: 'MyShop',
+      theme: ThemeData(
+        fontFamily: 'Lato',
+        pageTransitionsTheme: PageTransitionsTheme(builders: {
+          TargetPlatform.android: CustomPageTransitionBuilder(),
+        }),
+        colorScheme: ColorScheme.fromSwatch(primarySwatch: Colors.purple)
+            .copyWith(secondary: Colors.deepOrange),
       ),
+      home: /*auth.isAuth ? ProductsOverviewScreen() :*/ AuthScreen(),
+      routes: {},
     );
   }
 }
